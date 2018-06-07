@@ -1,0 +1,8 @@
+.cellfield {
+  display: flex;
+  justify-content: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  height: 500px;
+  width: 500px;
+}
