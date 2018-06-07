@@ -10,10 +10,18 @@
 .cellClicked {
   background-color: white;
   text-align: center;
+  position: relative;
 }
 
 .cellUnclicked {
   background-color: steelblue;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+.cellText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
