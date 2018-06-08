@@ -10,9 +10,11 @@ class Board extends Component {
       board: [],
       visuals: [],
       isGameOver: false,
+      isWon: false,
     }
     this.handleClick = this.handleClick.bind(this);
     this.revealAllBombs = this.revealAllBombs.bind(this);
+    this.handleWin = this.handleWin.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +59,7 @@ class Board extends Component {
       board: board,
       visuals: visuals,
       isGameOver: false,
+      isWon: false,
     });
   }
 
@@ -85,7 +88,22 @@ class Board extends Component {
     recurse(rowIndex, colIndex);
     this.setState({
       visuals: visuals,
-    });
+    }, this.handleWin());
+  }
+
+  handleWin() {
+    let unrevealedCounter = 0;
+    let visuals = [...this.state.visuals];
+    for(let a = 0; a < visuals.length; a++) {
+      for(let b = 0; b < visuals[a].length; b++) {
+        if(visuals[a][b] === 100) {
+          unrevealedCounter++;
+        }
+      }
+    }
+    if(unrevealedCounter === 10) {
+      this.setState({ isWon: true });
+    }
   }
 
   revealAllBombs() {
@@ -123,6 +141,9 @@ class Board extends Component {
         </div> 
         {this.state.isGameOver && 
           <div onClick={()=>this.initializeGame()} className="gameOver">Game Over!
+          </div>}
+        {this.state.isWon && 
+          <div onClick={()=>this.initializeGame()} className="gameOver">Game Won!
           </div>}
       </div>
     );
