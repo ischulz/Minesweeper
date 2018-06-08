@@ -16,6 +16,10 @@ class Board extends Component {
   }
 
   componentWillMount() {
+    this.initializeGame();
+  }
+
+  initializeGame = () => {
     let board = [];
     let visuals = [];
     for (let i = 1; i <= 10; i++) {
@@ -52,6 +56,7 @@ class Board extends Component {
     this.setState({
       board: board,
       visuals: visuals,
+      isGameOver: false,
     });
   }
 
@@ -111,11 +116,14 @@ class Board extends Component {
                 cellValue={this.state.board}
                 visualValue={this.state.visuals}
                 handleClick={this.handleClick}
+                isGameOver={this.state.isGameOver}
               />)
             })
           })}
         </div> 
-        {this.state.isGameOver && <div>GAME OVER!</div>}
+        {this.state.isGameOver && 
+          <div onClick={()=>this.initializeGame()} className="gameOver">Game Over!
+          </div>}
       </div>
     );
   }

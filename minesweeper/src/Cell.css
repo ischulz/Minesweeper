@@ -25,3 +25,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.disableCell {
+  cursor: not-allowed;
+}
+
+@-webkit-keyframes example {
+  0%   {transform: rotate(72deg); color:red}
+  25%  {transform: rotate(144deg); color:yellow}
+  50%  {transform: rotate(216deg); color:blue}
+  75%  {transform: rotate(288deg); color:green}
+  100% {transform: rotate(360deg); color:red}
+}
+
+.super-crazy-colors {
+  color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}

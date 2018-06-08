@@ -2,8 +2,22 @@
   display: flex;
   justify-content: row;
   flex-wrap: wrap;
-  margin: 0 auto;
+  margin: auto;
   height: 95vw;
   width: 95vw;
+  max-width: 500px;
+  max-height: 500px;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.gameOver {
+  display: block;
+  margin-top: 25px;
 }
 
