@@ -11,10 +11,14 @@ class Board extends Component {
       visuals: [],
       isGameOver: false,
       isWon: false,
+      isRunning: false,
+      timer: 0,
     }
     this.handleClick = this.handleClick.bind(this);
     this.revealAllBombs = this.revealAllBombs.bind(this);
     this.handleWin = this.handleWin.bind(this);
+    this.handleGameStart = this.handleGameStart.bind(this);
+    this.startTimer = this.startTimer.bind(this);
   }
 
   componentWillMount() {
@@ -32,13 +36,13 @@ class Board extends Component {
       visuals.push([...row]);
       board.push(row);
     }
-    let counter = 0;
-    while(counter !== 10) {
+    let mineCounter = 0;
+    while(mineCounter !== 10) {
       let x = (Math.floor(Math.random()*(10)+1)) - 1;
       let y = (Math.floor(Math.random()*(10)+1)) - 1;
       if(board[x][y] !== 66) {
         board[x][y] = 66;
-        counter++;
+        mineCounter++;
       }
     }
     for(let a = 0; a < 10; a ++) {
@@ -60,10 +64,28 @@ class Board extends Component {
       visuals: visuals,
       isGameOver: false,
       isWon: false,
+      timer: 0,
     });
   }
 
+  startTimer() {
+    let currentTime = this.state.timer;
+    let timerID;
+    timerID = setInterval(() => {
+      if(!this.state.isRunning){
+        clearInterval(timerID);
+      }else {
+       this.setState({
+         timer: currentTime++,
+       })
+      }
+    }, 1000);
+  }
+
   handleClick(rowIndex, colIndex) {
+    if(!this.state.isRunning){
+      return;
+    }
     let visuals = [...this.state.visuals];
     if (this.state.board[rowIndex][colIndex] === 66 && !this.state.isGameOver) {
         this.revealAllBombs();
@@ -88,7 +110,7 @@ class Board extends Component {
     recurse(rowIndex, colIndex);
     this.setState({
       visuals: visuals,
-    }, this.handleWin());
+    }, () => this.handleWin());
   }
 
   handleWin() {
@@ -102,8 +124,20 @@ class Board extends Component {
       }
     }
     if(unrevealedCounter === 10) {
-      this.setState({ isWon: true });
+      this.setState({
+        isWon: true, 
+        isRunning: false,
+        timer: 0,
+        });
     }
+  }
+
+  async handleGameStart() {
+    this.initializeGame();
+    await this.setState({
+      isRunning: true,
+    });
+    this.startTimer();
   }
 
   revealAllBombs() {
@@ -118,6 +152,7 @@ class Board extends Component {
     this.setState({
       visuals: visuals,
       isGameOver: true,
+      isRunning:false,
     });
   }
 
@@ -135,15 +170,25 @@ class Board extends Component {
                 visualValue={this.state.visuals}
                 handleClick={this.handleClick}
                 isGameOver={this.state.isGameOver}
+                isWon={this.state.isWon}
+                isRunning={this.state.isRunning}
               />)
             })
           })}
         </div> 
+        {!this.state.isRunning && 
+          <div className="gameOver">
+            <button onClick={this.handleGameStart}>Start New Game</button>
+          </div>}
+        {this.state.isRunning &&
+          <div className="gameOver">
+            Time: {Math.floor(this.state.timer / 60)}min {this.state.timer % 60}sec
+          </div>}
         {this.state.isGameOver && 
-          <div onClick={()=>this.initializeGame()} className="gameOver">Game Over!
+          <div className="gameOver">Game Over!
           </div>}
         {this.state.isWon && 
-          <div onClick={()=>this.initializeGame()} className="gameOver">Game Won!
+          <div className="gameOver">Game Won!
           </div>}
       </div>
     );

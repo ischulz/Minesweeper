@@ -16,13 +16,14 @@ const getCellText = (text, value, props) => {
         />
       </div>
     }
-    return props.visualValue[props.row][props.cell] === 1 && props.cellValue[props.row][props.cell] === value && <div className="cellText">{text}</div>;
+    return props.visualValue[props.row][props.cell] === 1 && 
+            props.cellValue[props.row][props.cell] === value && 
+            <div className="cellText">{text}</div>;
 };
   
-
 const Cell = ((props) => (
     <div 
-      className={`${props.visualValue[props.row][props.cell] === 1 ? 'cell cellClicked' : 'cell cellUnclicked'} ${props.isGameOver ? 'disableCell':''}`}
+      className={`${props.visualValue[props.row][props.cell] === 1 ? 'cell cellClicked' : 'cell cellUnclicked'} ${(props.isGameOver || props.isWon) ? 'disableCell':''}`}
       onClick={() => {
         if(!props.isGameOver) {
           props.handleClick(props.row, props.cell)}
