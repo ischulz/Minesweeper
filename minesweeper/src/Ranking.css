@@ -1,0 +1,18 @@
+.rankingTable {
+    margin: 20px auto;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    width: 50px;
+    text-align: center;
+    border-bottom: 0.5px solid black;
+}
+
+td {
+    width: 100px;
+    text-align: center;
+}
