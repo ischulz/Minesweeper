@@ -29,7 +29,22 @@ const Cell = ((props) => (
           props.handleClick(props.row, props.cell)}
         }
       }
+      onContextMenu={(e) => {
+        e.preventDefault();
+        if(!props.isGameOver) {
+          props.handleRightClick(props.row, props.cell)}
+        }
+      }
     >
+    {props.visualValue[props.row][props.cell] === 100 && props.toggleFlag([props.row, props.cell]) && 
+      <div className="cellText">
+        <FontAwesome
+          name='flag'
+          size='2x'
+          style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+        />
+      </div>
+    }
       {getCellText('Bomb', 66, props) ||
       getCellText(1, 101, props) ||
       getCellText(2, 102, props) ||

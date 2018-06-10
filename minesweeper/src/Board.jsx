@@ -26,6 +26,7 @@ class Board extends Component {
       timer: 0,
       beatTime: 0,
       scores: [],
+      flags: [],
     }
     this.handleClick      = this.handleClick.bind(this);
     this.revealAllBombs   = this.revealAllBombs.bind(this);
@@ -34,6 +35,8 @@ class Board extends Component {
     this.startTimer       = this.startTimer.bind(this);
     this.fetchScoreData   = this.fetchScoreData.bind(this);
     this.sortScores       = this.sortScores.bind(this);
+    this.handleRightClick = this.handleRightClick.bind(this);
+    this.toggleFlag       = this.toggleFlag.bind(this);
   }
 
   componentWillMount() {
@@ -133,6 +136,7 @@ class Board extends Component {
       isWon: false,
       timer: 0,
       beatTime: 0,
+      flags: [],
     });
   }
 
@@ -148,6 +152,32 @@ class Board extends Component {
        })
       }
     }, 1000);
+  }
+
+  async handleRightClick(rowIndex, colIndex) {
+    let currentFlags = [...this.state.flags];
+    let flagIndex = -1;
+    let position = [rowIndex, colIndex];
+    if(!this.state.isRunning){
+      return;
+    }
+    if(currentFlags.length !== 0) {
+      for(let i = 0; i < currentFlags.length; i++) {
+        if(JSON.stringify(position) === JSON.stringify(currentFlags[i])) {
+          flagIndex = i;
+        }
+      }
+    }
+
+    if(flagIndex === -1) {
+      currentFlags.push([rowIndex, colIndex]);
+    }else {
+      currentFlags.splice(flagIndex, 1);
+    }
+    await this.setState({
+      flags: currentFlags,
+    });
+    this.handleWin();
   }
 
   handleClick(rowIndex, colIndex) {
@@ -181,17 +211,39 @@ class Board extends Component {
     }, () => this.handleWin());
   }
 
+  toggleFlag(arr) {
+    let cellIsFlagged = false;
+    let currentFlags = [...this.state.flags];
+    for(let i = 0; i < currentFlags.length; i++) {
+      if(JSON.stringify(arr) === JSON.stringify(currentFlags[i])) {
+        cellIsFlagged = true;
+      }
+    }
+    return cellIsFlagged;
+  }
+
   async handleWin() {
     let unrevealedCounter = 0;
+    let flagsCorrect = 0;
     let visuals = [...this.state.visuals];
-    for(let a = 0; a < visuals.length; a++) {
-      for(let b = 0; b < visuals[a].length; b++) {
-        if(visuals[a][b] === 100) {
-          unrevealedCounter++;
+    let flags = this.state.flags;
+    if(flags.length === 10) {
+      for(let i = 0; i < flags.length; i++) {
+        if(this.state.board[flags[i][0]][flags[i][1]] === 66) {
+          flagsCorrect++;
         }
       }
     }
-    if(unrevealedCounter === 10) {
+    if(flagsCorrect !== 10) {
+      for(let a = 0; a < visuals.length; a++) {
+        for(let b = 0; b < visuals[a].length; b++) {
+          if(visuals[a][b] === 100) {
+            unrevealedCounter++;
+          }
+        }
+      }
+    }
+    if(unrevealedCounter === 10 || flagsCorrect === 10) {
       let winTime = this.state.timer;
       await this.setState({
         isWon: true, 
@@ -232,6 +284,7 @@ class Board extends Component {
   render() {
     return (
       <div className="board">
+        <h1>Minesweeper</h1>
         <div className="cellfield">
           {this.state.board.map((row, rowIndex) => {
             return row.map((cell, cellIndex) => {
@@ -242,6 +295,8 @@ class Board extends Component {
                 cellValue={this.state.board}
                 visualValue={this.state.visuals}
                 handleClick={this.handleClick}
+                handleRightClick={this.handleRightClick}
+                toggleFlag ={this.toggleFlag}
                 isGameOver={this.state.isGameOver}
                 isWon={this.state.isWon}
                 isRunning={this.state.isRunning}

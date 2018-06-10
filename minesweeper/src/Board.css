@@ -1,3 +1,8 @@
+h1 {
+  text-align: center;
+  margin: 5px auto 10px auto;
+}
+
 .cellfield {
   display: flex;
   justify-content: row;
@@ -10,7 +15,7 @@
 }
 
 .board {
-  margin-top: 25px;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
   align-content: center;

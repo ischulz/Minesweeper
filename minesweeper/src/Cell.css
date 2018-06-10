@@ -8,12 +8,13 @@
 }
 
 .cellClicked {
+  position: relative;
   background-color: white;
   text-align: center;
-  position: relative;
 }
 
 .cellUnclicked {
+  position: relative;
   background-color: steelblue;
   border: 1px solid black;
   border-radius: 5px;
@@ -42,4 +43,8 @@
   color: red;
   animation-name: example;
   animation-duration: 4s;
+}
+
+.flaggedCell {
+  background-color: green !important;
 }
