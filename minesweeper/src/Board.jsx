@@ -63,6 +63,7 @@ class Board extends Component {
 
   postScoreData(name, score) {
     let that = this;
+    let key = !!config ? config.API_KEY : process.env.REACT_APP_API_KEY;
     axios.post(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`, {
       name: name,
       score: score,
