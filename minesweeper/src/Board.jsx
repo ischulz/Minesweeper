@@ -43,7 +43,7 @@ class Board extends Component {
   fetchScoreData() {
     let that = this;
     let key = !!config ? config.API_KEY : process.env.API_KEY;
-    axios.get(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`)
+    axios.get(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${process.env.API_KEY}`)
     .then(function (response) {
       console.log(response.data)
       let currentScores = [];
