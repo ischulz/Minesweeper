@@ -4,13 +4,7 @@ import Ranking from './Ranking.jsx';
 import './Board.css';
 
 import axios from 'axios';
-//import config from './config.js';
-try {
-  var config = require('./config.js');
-  // do stuff
-} catch (ex) {
-  console.log(ex);
-}
+
 
 
 class Board extends Component {
@@ -45,7 +39,7 @@ class Board extends Component {
 
   fetchScoreData() {
     let that = this;
-    let key = !!config ? config.API_KEY : process.env.REACT_APP_API_KEY;
+    let key = process.env.REACT_APP_API_KEY;
     axios.get(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`)
     .then(function (response) {
       console.log(response.data)
@@ -66,7 +60,7 @@ class Board extends Component {
 
   postScoreData(name, score) {
     let that = this;
-    let key = !!config ? config.API_KEY : process.env.REACT_APP_API_KEY;
+    let key = process.env.REACT_APP_API_KEY;
     axios.post(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`, {
       name: name,
       score: score,
