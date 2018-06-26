@@ -1,3 +1,7 @@
+This Minesweeper game has been created using Create React App. It uses mLab to store user scores.
+The game can be found on:
+https://hidden-sea-46364.herokuapp.com/
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
