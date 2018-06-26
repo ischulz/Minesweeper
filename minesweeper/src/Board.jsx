@@ -39,8 +39,7 @@ class Board extends Component {
 
   fetchScoreData() {
     let that = this;
-    let key = process.env.REACT_APP_API_KEY;
-    axios.get(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`)
+    axios.get(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${process.env.REACT_APP_API_KEY}`)
     .then(function (response) {
       console.log(response.data)
       let currentScores = [];
@@ -60,8 +59,7 @@ class Board extends Component {
 
   postScoreData(name, score) {
     let that = this;
-    let key = process.env.REACT_APP_API_KEY;
-    axios.post(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${key}`, {
+    axios.post(`https://api.mlab.com/api/1/databases/minesweeper_scoreboard/collections/scores?apiKey=${process.env.REACT_APP_API_KEY}`, {
       name: name,
       score: score,
     })
